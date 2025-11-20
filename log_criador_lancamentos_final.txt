@@ -1,0 +1,19 @@
+2025-10-18 20:14:15,323 - INFO - 
+====== INICIANDO CRIADOR DE LANÇAMENTOS ERPNEXT (v1.2 - Corrigido) ======
+2025-10-18 20:14:15,325 - INFO - --- Validando variáveis de ambiente (ERPNext & ONGSYS) ---
+2025-10-18 20:14:15,326 - INFO - -> Variáveis OK.
+2025-10-18 20:14:15,326 - INFO - --- Carregando mapeamento CC->Armazém de 'centro_de_custo_armazen.csv' ---
+2025-10-18 20:14:15,380 - INFO - -> 22 regras carregadas.
+2025-10-18 20:14:15,385 - INFO - --- Etapa 1: Extraindo Pedidos do ONGSYS ---
+2025-10-18 20:14:15,386 - INFO - Buscando página de pedidos: 1...
+2025-10-18 20:14:23,519 - INFO -  -> 100 registros | 99 finalizados adicionados.
+2025-10-18 20:14:23,622 - INFO - Buscando página de pedidos: 2...
+2025-10-18 20:14:31,134 - INFO -  -> 100 registros | 83 finalizados adicionados.
+2025-10-18 20:14:31,238 - INFO - Buscando página de pedidos: 3...
+2025-10-18 20:14:37,079 - INFO -  -> 77 registros | 47 finalizados adicionados.
+2025-10-18 20:14:37,180 - INFO - Buscando página de pedidos: 4...
+2025-10-18 20:14:40,361 - INFO - -> Fim dos dados (422).
+2025-10-18 20:14:40,362 - INFO - 
+-> Extração concluída: 229 pedidos encontrados.
+2025-10-18 20:14:45,811 - INFO - --- ETAPA 2: Verificando Lançamentos existentes ---
+2025-10-18 20:14:48,623 - INFO -    Buscando lote (a partir de 0)...

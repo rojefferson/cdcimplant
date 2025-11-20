@@ -1,0 +1,35 @@
+Ingles,Tradução
+Disassemble , Desmontar
+Manufacture , Fabricar
+Material Consumption for Manufacture , Consumo de Material para Fabricação
+Material Issue , Saída de Material
+Material Receipt , Recebimento de Material
+Material Transfer , Transferência de Material
+Material Transfer for Manufacture , Transferência de Material para Fabricação
+Repack , Reembalar 
+Grant Commission,Conceder Comissão
+Allow Sales,Permitir Vendas
+Deferred Accounting,Lançamento Diferido
+Inventory Settings,Configurações de Estoque
+Other Info,Outras Informações
+BOM Info,Informações da LDM (Lista de Materiais)
+Scan Barcode,Escanear Código de Barras
+Company Billing Address,Endereço de Faturamento da Empresa
+Additional Info,Informações Adicionais
+Segregate Serial / Batch Bundle,Separar Pacote por Lote / Nº de Série
+Show Dimension Wise Stock,Mostrar Estoque por Dimensão
+Include Zero Stock Items,Incluir Itens com Estoque Zero
+Scan Mode,Modo de Escaneamento
+Disables auto-fetching of existing quantity,Desativa a busca automática da quantidade existente
+Basic Info,Informações Básicas
+Desk Settings,Configurações da Área de Trabalho
+Search Bar,Barra de Pesquisa
+Sidebar,Barra Lateral
+Bulk Actions,Ações em Massa
+Timeline,Linha do Tempo
+Default Workspace,Área de Trabalho Padrão
+"If left empty, the default workspace will be the last visited workspace","Se deixado em branco, a área de trabalho padrão será a última visitada"
+Default App,Aplicativo Padrão
+Redirect to the selected app after login,Redirecionar para o aplicativo selecionado após o login
+Click here to learn about token-based authentication,Clique aqui para saber mais sobre autenticação baseada em token
+Permission Manager,Gerenciador de Permissões
