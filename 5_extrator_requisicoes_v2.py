@@ -91,28 +91,30 @@ lista_pedidos_finalizados = [
 ]
 
 for pedido in lista_pedidos_finalizados:
+    try:
+        idpedido = str(pedido.get("idPedido"))
+        payload_lancamento = {"doctype": "Stock Entry", "stock_entry_type": "Material Receipt", "posting_date": pedido.get("dataPedido"),"set_posting_time" : 1, "docstatus": 1,"idpedido_ongsys": idpedido ,"titulo_ongsys" : pedido.get("titulo"), "company": COMPANY_NAME,"items": []}
 
-    idpedido = str(pedido.get("idPedido"))
-    payload_lancamento = {"doctype": "Stock Entry", "stock_entry_type": "Material Receipt", "posting_date": pedido.get("dataPedido"),"set_posting_time" : 1, "docstatus": 1,"idpedido_ongsys": idpedido ,"titulo_ongsys" : pedido.get("titulo"), "company": COMPANY_NAME,"items": []}
-
-    retorno = api.erp_request("GET", "Stock Entry", params={"filters": f'[[ "idpedido_ongsys", "=", "{idpedido}" ]]'})
-    if retorno.json().get("data"):
-        print(f"Pedido {pedido.get('idPedido')} já existe no ERPNext. Pulando...")
-        continue
-
-    for item in pedido.get("itensPedido", []):
-        centrocusto = item.get("centroCusto")
-        if df_dict.get(centrocusto) is None:
-            print(f"Pedido {pedido.get('idPedido')} - Centro de custo {centrocusto} não mapeado. Pulando item...")
+        retorno = api.erp_request("GET", "Stock Entry", params={"filters": f'[[ "idpedido_ongsys", "=", "{idpedido}" ]]'})
+        if retorno.json().get("data"):
+            print(f"Pedido {pedido.get('idPedido')} já existe no ERPNext. Pulando...")
             continue
 
-        payload_lancamento["items"].append({
-            "item_code": str(item.get("idProduto")),
-            "qty": item.get("quantidade"),
-            "t_warehouse": df_dict.get(centrocusto)+ " - CDC"
-        })
-    response = api.erp_request("POST", "Stock Entry", payload=payload_lancamento)
-    print(f"Pedido {pedido.get('idPedido')} - Status: {response.status_code}")
+        for item in pedido.get("itensPedido", []):
+            centrocusto = item.get("centroCusto")
+            if df_dict.get(centrocusto) is None:
+                print(f"Pedido {pedido.get('idPedido')} - Centro de custo {centrocusto} não mapeado. Pulando item...")
+                continue
+
+            payload_lancamento["items"].append({
+                "item_code": str(item.get("idProduto")),
+                "qty": item.get("quantidade"),
+                "t_warehouse": df_dict.get(centrocusto)+ " - CDC"
+            })
+        response = api.erp_request("POST", "Stock Entry", payload=payload_lancamento)
+        print(f"Pedido {pedido.get('idPedido')} - Status: {response.status_code}")
+    except Exception as e:
+        print(f"Erro ao processar pedido {pedido.get('idPedido')}: {e}")
 
    
 
