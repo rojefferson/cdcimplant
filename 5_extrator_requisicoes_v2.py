@@ -105,6 +105,9 @@ for pedido in lista_pedidos_finalizados:
             if df_dict.get(centrocusto) is None:
                 print(f"Pedido {pedido.get('idPedido')} - Centro de custo {centrocusto} não mapeado. Pulando item...")
                 continue
+            if item.get("quantidade", 0) == 0:
+                print(f"Pedido {pedido.get('idPedido')} - Item {item.get('idProduto')} ignorado (quantidade 0).")
+                continue
 
             payload_lancamento["items"].append({
                 "item_code": str(item.get("idProduto")),
@@ -113,6 +116,10 @@ for pedido in lista_pedidos_finalizados:
             })
         response = api.erp_request("POST", "Stock Entry", payload=payload_lancamento)
         print(f"Pedido {pedido.get('idPedido')} - Status: {response.status_code}")
+
+        if pedido.get("idPedido") == "27" or pedido.get("idpedido") == "374":
+            print(response.text)
+            
     except Exception as e:
         print(f"Erro ao processar pedido {pedido.get('idPedido')}: {e}")
 
