@@ -109,7 +109,7 @@ for pedido in lista_pedidos_finalizados:
             payload_lancamento["items"].append({
                 "item_code": str(item.get("idProduto")),
                 "qty": item.get("quantidade"),
-                "t_warehouse": df_dict.get(centrocusto)+ " - CDC"
+                "t_warehouse": df_dict.get(centrocusto)+ " - C"
             })
         response = api.erp_request("POST", "Stock Entry", payload=payload_lancamento)
         print(response.text)
