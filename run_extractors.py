@@ -4,24 +4,15 @@
 """
 Script para executar todos os extratores em sequência.
 
-CONFIGURAÇÃO DE AUTOMAÇÃO NO LINUX (CRON):
+Exemplos de uso:
 
-1. Abra o terminal e digite: crontab -e
-2. Adicione uma linha para agendar a execução. 
-   Exemplo para rodar todo dia às 03:00 da manhã:
+    python run_extractors.py dev
+    python run_extractors.py hml
+    python run_extractors.py prod
 
-   0 3 * * * /usr/bin/python3 /caminho/para/seu/projeto/run_extractors.py >> /caminho/para/seu/projeto/cron_log.txt 2>&1
+No CRON, algo como:
 
-   Onde:
-   - /usr/bin/python3: Caminho para o executável do Python (verifique com `which python3`)
-   - /caminho/para/seu/projeto/: Caminho absoluto onde este arquivo está salvo
-   - >> cron_log.txt: Salva a saída (logs) em um arquivo de texto para conferência
-   - 2>&1: Redireciona erros para o mesmo arquivo de log
-
-3. Salve e feche o editor.
-
-DICA: Certifique-se de que o arquivo run_extractors.py tem permissão de execução:
-      chmod +x /caminho/para/seu/projeto/run_extractors.py
+    */30 * * * * /usr/bin/python3 /caminho/para/seu/projeto/run_extractors.py prod >> /caminho/para/seu/projeto/cron_log.txt 2>&1
 """
 
 import subprocess
@@ -38,17 +29,17 @@ SCRIPTS = [
     "5_extrator_requisicoes_v2.py",
 ]
 
-def run_script(script_name):
-    """Executa um script Python individualmente."""
-    print(f"--- Iniciando {script_name} ---")
+def run_script(script_name, env_name):
+    """Executa um script Python individualmente, passando o env como parâmetro."""
+    print(f"--- Iniciando {script_name} (env={env_name}) ---")
     start_time = time.time()
     
     try:
-        # Executa o script usando o mesmo interpretador Python atual
+        # Chama: python script_name <env>
         result = subprocess.run(
-            [sys.executable, script_name],
+            [sys.executable, script_name, env_name],
             check=True,
-            capture_output=False, # Deixar a saída ir para o stdout/stderr padrão
+            capture_output=False,  # deixa a saída ir para stdout/stderr padrão
             text=True
         )
         elapsed = time.time() - start_time
@@ -63,15 +54,23 @@ def run_script(script_name):
         return False
 
 def main():
+    # Lê o env da linha de comando: python run_extractors.py dev
+    if len(sys.argv) > 1:
+        env_name = sys.argv[1]
+    else:
+        # Default se não passar nada
+        env_name = "dev"
+
     base_dir = os.path.dirname(os.path.abspath(__file__))
-    os.chdir(base_dir) # Garante que estamos no diretório correto
+    os.chdir(base_dir)  # Garante que estamos no diretório correto
     
     print(f"Iniciando execução sequencial de {len(SCRIPTS)} extratores...")
-    print(f"Diretório de trabalho: {base_dir}\n")
+    print(f"Diretório de trabalho: {base_dir}")
+    print(f"Ambiente (env): {env_name}\n")
 
     for script in SCRIPTS:
         if os.path.exists(script):
-            success = run_script(script)
+            success = run_script(script, env_name)
             if not success:
                 print("Interrompendo a sequência devido a erro no script anterior.")
                 sys.exit(1)
