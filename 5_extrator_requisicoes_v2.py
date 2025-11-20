@@ -93,7 +93,7 @@ lista_pedidos_finalizados = [
 for pedido in lista_pedidos_finalizados:
     try:
         idpedido = str(pedido.get("idPedido"))
-        payload_lancamento = {"doctype": "Stock Entry", "stock_entry_type": "Material Receipt", "posting_date": pedido.get("dataPedido"),"set_posting_time" : 1, "docstatus": 1,"idpedido_ongsys": idpedido ,"titulo_ongsys" : pedido.get("titulo"), "company": COMPANY_NAME,"items": []}
+        payload_lancamento = {"doctype": "Stock Entry", "stock_entry_type": "Entrada de Material", "posting_date": pedido.get("dataPedido"),"set_posting_time" : 1, "docstatus": 1,"idpedido_ongsys": idpedido ,"titulo_ongsys" : pedido.get("titulo"), "company": COMPANY_NAME,"items": []}
 
         retorno = api.erp_request("GET", "Stock Entry", params={"filters": f'[[ "idpedido_ongsys", "=", "{idpedido}" ]]'})
         if retorno.json().get("data"):
