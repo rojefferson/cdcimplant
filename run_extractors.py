@@ -59,7 +59,7 @@ def main():
         env_name = sys.argv[1]
     else:
         # Default se não passar nada
-        env_name = "dev"
+        env_name = "env"
 
     base_dir = os.path.dirname(os.path.abspath(__file__))
     os.chdir(base_dir)  # Garante que estamos no diretório correto
