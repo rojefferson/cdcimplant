@@ -112,7 +112,6 @@ for pedido in lista_pedidos_finalizados:
                 "t_warehouse": df_dict.get(centrocusto)+ " - C"
             })
         response = api.erp_request("POST", "Stock Entry", payload=payload_lancamento)
-        print(response.text)
         print(f"Pedido {pedido.get('idPedido')} - Status: {response.status_code}")
     except Exception as e:
         print(f"Erro ao processar pedido {pedido.get('idPedido')}: {e}")
