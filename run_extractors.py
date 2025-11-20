@@ -1,26 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""
-Script para executar todos os extratores em sequência.
-
-Exemplos de uso:
-
-    python run_extractors.py dev
-    python run_extractors.py hml
-    python run_extractors.py prod
-
-No CRON, algo como:
-
-    */30 * * * * /usr/bin/python3 /caminho/para/seu/projeto/run_extractors.py prod >> /caminho/para/seu/projeto/cron_log.txt 2>&1
-"""
-
 import subprocess
 import sys
 import os
 import time
 
-# Lista de scripts na ordem de execução
 SCRIPTS = [
     "1_armazem_v2.py",
     "2_Extrator_grupo_v2.py",
@@ -30,17 +15,21 @@ SCRIPTS = [
 ]
 
 def run_script(script_name, env_name):
-    """Executa um script Python individualmente, passando o env como parâmetro."""
+    """Executa um script Python individualmente, passando o env como parâmetro e variável de ambiente."""
     print(f"--- Iniciando {script_name} (env={env_name}) ---")
     start_time = time.time()
-    
+
+    # copia variáveis de ambiente atuais e adiciona o APP_ENV
+    env_vars = os.environ.copy()
+    env_vars["APP_ENV"] = env_name
+
     try:
-        # Chama: python script_name <env>
         result = subprocess.run(
-            [sys.executable, script_name, env_name],
+            [sys.executable, script_name, env_name],  # também passa como argumento
             check=True,
-            capture_output=False,  # deixa a saída ir para stdout/stderr padrão
-            text=True
+            capture_output=False,
+            text=True,
+            env=env_vars,  # <-- AQUI
         )
         elapsed = time.time() - start_time
         print(f"--- {script_name} concluído com sucesso em {elapsed:.2f} segundos ---\n")
@@ -54,16 +43,14 @@ def run_script(script_name, env_name):
         return False
 
 def main():
-    # Lê o env da linha de comando: python run_extractors.py dev
     if len(sys.argv) > 1:
         env_name = sys.argv[1]
     else:
-        # Default se não passar nada
-        env_name = "env"
+        env_name = "dev"
 
     base_dir = os.path.dirname(os.path.abspath(__file__))
-    os.chdir(base_dir)  # Garante que estamos no diretório correto
-    
+    os.chdir(base_dir)
+
     print(f"Iniciando execução sequencial de {len(SCRIPTS)} extratores...")
     print(f"Diretório de trabalho: {base_dir}")
     print(f"Ambiente (env): {env_name}\n")
@@ -76,7 +63,6 @@ def main():
                 sys.exit(1)
         else:
             print(f"!!! ARQUIVO NÃO ENCONTRADO: {script} !!!")
-            print("Verifique se o arquivo existe no diretório.")
             sys.exit(1)
 
     print("Todos os extratores foram executados com sucesso!")
