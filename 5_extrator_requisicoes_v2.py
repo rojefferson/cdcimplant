@@ -38,34 +38,34 @@ if existe != 1:
 # pedidos = api.erp_request("GET", "Stock Entry/MAT-STE-2025-00010").text
 
 
-# custom_field_payload_cab_texto_multi = {
-#   "dt": "Stock Entry",
-#   "fieldname": "idpedido_ongsys",
-#   "label": "Texto Multi (CAB)",
-#   "fieldtype": "Small Text", 
-#   "insert_after": "posting_date",
-#   "in_list_view": 0,
-#   "in_standard_filter": 0,
-#   "reqd": 0
-# }
+custom_field_payload_cab_texto_multi = {
+  "dt": "Stock Entry",
+  "fieldname": "idpedido_ongsys",
+  "label": "Texto Multi (CAB)",
+  "fieldtype": "Small Text", 
+  "insert_after": "posting_date",
+  "in_list_view": 0,
+  "in_standard_filter": 0,
+  "reqd": 0
+}
 
 
-# resp = api.erp_request("post","Custom%20Field", payload=custom_field_payload_cab_texto_multi)
+resp = api.erp_request("post","Custom%20Field", payload=custom_field_payload_cab_texto_multi)
 
 
-# custom_field_payload_cab_texto_multi = {
-#   "dt": "Stock Entry",
-#   "fieldname": "titulo_ongsys",
-#   "label": "Texto Multi (CAB)",
-#   "fieldtype": "Small Text", 
-#   "insert_after": "posting_date",
-#   "in_list_view": 0,
-#   "in_standard_filter": 0,
-#   "reqd": 0
-# }
+custom_field_payload_cab_texto_multi = {
+  "dt": "Stock Entry",
+  "fieldname": "titulo_ongsys",
+  "label": "Texto Multi (CAB)",
+  "fieldtype": "Small Text", 
+  "insert_after": "posting_date",
+  "in_list_view": 0,
+  "in_standard_filter": 0,
+  "reqd": 0
+}
 
 
-# resp = api.erp_request("post","Custom%20Field", payload=custom_field_payload_cab_texto_multi)
+resp = api.erp_request("post","Custom%20Field", payload=custom_field_payload_cab_texto_multi)
 
 
 
