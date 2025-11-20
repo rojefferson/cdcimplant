@@ -8,11 +8,6 @@ import logging
 import requests
 from typing import Any, Dict, List, Optional
 from requests.auth import HTTPBasicAuth
-from dotenv import load_dotenv
-
-# Carregar variáveis do .env (mantido como no seu padrão)
-load_dotenv()
-
 
 class Common:
     # Configurações de sincronização (mantidas)
@@ -24,14 +19,25 @@ class Common:
     VERIFY_INTERVAL: int = 3   # Intervalo para verificar a criação
 
     def __init__(self) -> None:
-        # URLs e credenciais do ERPNext e ONGSYS (mantidas)
-        self.ERP_URL: str = (os.getenv("ERPNext_URL") or "").rstrip("/")
-        self.API_KEY: Optional[str] = os.getenv("ERPNext_API_KEY")
-        self.API_SECRET: Optional[str] = os.getenv("ERPNext_API_SECRET")
+        # Carregar configurações do arquivo JSON
+        try:
+            with open("configs.json", "r") as f:
+                config = json.load(f)
+        except FileNotFoundError:
+            print("Arquivo configs.json não encontrado.")
+            config = {}
+        except json.JSONDecodeError:
+            print("Erro ao decodificar configs.json.")
+            config = {}
 
-        self.ONGSYS_URL: str = (os.getenv("ONGSYS_URL_BASE") or "").rstrip("/")
-        self.ONGSYS_USER: Optional[str] = os.getenv("ONGSYS_USERNAME")
-        self.ONGSYS_PASS: Optional[str] = os.getenv("ONGSYS_PASSWORD")
+        # URLs e credenciais do ERPNext e ONGSYS (mantidas)
+        self.ERP_URL: str = (config.get("ERPNext_URL") or "").rstrip("/")
+        self.API_KEY: Optional[str] = config.get("ERPNext_API_KEY")
+        self.API_SECRET: Optional[str] = config.get("ERPNext_API_SECRET")
+
+        self.ONGSYS_URL: str = (config.get("ONGSYS_URL_BASE") or "").rstrip("/")
+        self.ONGSYS_USER: Optional[str] = config.get("ONGSYS_USERNAME")
+        self.ONGSYS_PASS: Optional[str] = config.get("ONGSYS_PASSWORD")
 
         # Cabeçalhos para ERPNext (mantidos)
         self.HEADERS_ERP: Dict[str, str] = {
@@ -132,5 +138,3 @@ class Common:
             all_records.extend(records)
             pagina += 1
         return all_records
-
-            

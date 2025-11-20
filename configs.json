@@ -1,0 +1,9 @@
+{
+    "ERPNext_URL": "https://estoque.cdc.org.br",
+    "ERPNext_API_KEY": "0d3351e5e43fd79",
+    "ERPNext_API_SECRET": "be136d02bd32040",
+    "ONGSYS_URL_BASE": "https://www.ongsys.com.br/app/index.php/api/v2",
+    "ONGSYS_USERNAME": "03970166000129",
+    "ONGSYS_PASSWORD": "fa009965195f9770db49a9111570b531",
+    "ERPNext_WAREHOUSE": "Stores - CDC"
+}
