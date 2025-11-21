@@ -25,8 +25,6 @@ def convert_df_to_payload_list(df: pd.DataFrame, company_name: str) -> list:
 file_path = "centro_de_custo_armazen.csv"
 df = pd.read_csv(file_path, sep=";", dtype=str, encoding="latin-1")
 # Display the first few rows of the data
-print(df.head())
-
 
 
 payload_list = convert_df_to_payload_list(df, COMPANY_NAME)

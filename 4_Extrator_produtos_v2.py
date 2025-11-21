@@ -29,7 +29,7 @@ for produto in produtos_normalizados:
         resp = api.erp_request("POST","Item", payload=produto)
     if resp.status_code == 417:
         print(resp.json())
-    print(f"Processado produto {produto['item_code']}")
+  #  print(f"Processado produto {produto['item_code']}")
 print("Extração de produtos concluída.")
 
 

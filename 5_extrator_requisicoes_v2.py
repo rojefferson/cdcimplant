@@ -97,16 +97,16 @@ for pedido in lista_pedidos_finalizados:
 
         retorno = api.erp_request("GET", "Stock Entry", params={"filters": f'[[ "idpedido_ongsys", "=", "{idpedido}" ]]'})
         if retorno.json().get("data"):
-            print(f"Pedido {pedido.get('idPedido')} já existe no ERPNext. Pulando...")
+         #   print(f"Pedido {pedido.get('idPedido')} já existe no ERPNext. Pulando...")
             continue
 
         for item in pedido.get("itensPedido", []):
             centrocusto = item.get("centroCusto")
             if df_dict.get(centrocusto) is None:
-                print(f"Pedido {pedido.get('idPedido')} - Centro de custo {centrocusto} não mapeado. Pulando item...")
+            #    print(f"Pedido {pedido.get('idPedido')} - Centro de custo {centrocusto} não mapeado. Pulando item...")
                 continue
             if item.get("quantidade", 0) == 0:
-                print(f"Pedido {pedido.get('idPedido')} - Item {item.get('idProduto')} ignorado (quantidade 0).")
+           #     print(f"Pedido {pedido.get('idPedido')} - Item {item.get('idProduto')} ignorado (quantidade 0).")
                 continue
 
             payload_lancamento["items"].append({
@@ -115,10 +115,10 @@ for pedido in lista_pedidos_finalizados:
                 "t_warehouse": df_dict.get(centrocusto)+ " - C"
             })
         response = api.erp_request("POST", "Stock Entry", payload=payload_lancamento)
-        print(f"Pedido {pedido.get('idPedido')} - Status: {response.status_code}")
+       # print(f"Pedido {pedido.get('idPedido')} - Status: {response.status_code}")
 
-        if pedido.get("idPedido") == "27" or pedido.get("idpedido") == "374":
-            print(response.text)
+        # if pedido.get("idPedido") == "27" or pedido.get("idpedido") == "374":
+        #     print(response.text)
             
     except Exception as e:
         print(f"Erro ao processar pedido {pedido.get('idPedido')}: {e}")
