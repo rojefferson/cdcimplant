@@ -2,6 +2,8 @@ from common import Common
 from typing import Dict
 import pandas as pd
 from typing import Optional, Dict
+from datetime import datetime, timedelta
+
 api = Common()
 
 
@@ -73,6 +75,7 @@ COMPANY_NAME = "CDC"
 
 lista_todos_pedidos = api.get_all_ongsys("pedidos")
 
+
 file_path = "centro_de_custo_armazen.csv"
 df = pd.read_csv(file_path, sep=";", dtype=str, encoding="latin-1")
 
@@ -90,10 +93,23 @@ lista_pedidos_finalizados = [
     and pedido.get("statusPedido") == "Ordem finalizada"
 ]
 
-for pedido in lista_pedidos_finalizados:
+
+# 1. Calcula a data de 60 dias atrás
+data_limite = datetime.now() - timedelta(days=30)
+
+# 2. Filtra a lista assumindo que cada pedido é um dicionário com a chave 'data'
+pedidos_ultimos_2_meses = [
+    pedido for pedido in lista_pedidos_finalizados 
+    if datetime.fromisoformat(pedido['dataPedido'] )  >= data_limite
+]
+
+for pedido in pedidos_ultimos_2_meses:
+    logs = pedido.get("logs", [])
+   
+    primeiro_log = sorted(logs, key=lambda x: x['data'],reverse=True)[0]
     try:
         idpedido = str(pedido.get("idPedido"))
-        payload_lancamento = {"doctype": "Stock Entry", "stock_entry_type": "Entrada de Material", "posting_date": pedido.get("dataPedido"),"set_posting_time" : 1, "docstatus": 1,"idpedido_ongsys": idpedido ,"titulo_ongsys" : pedido.get("titulo"), "company": COMPANY_NAME,"items": []}
+        payload_lancamento = {"doctype": "Stock Entry", "stock_entry_type": "Entrada de Material", "posting_date": primeiro_log.get("data"), "set_posting_time" : 1, "docstatus": 1,"idpedido_ongsys": idpedido ,"titulo_ongsys" : pedido.get("titulo"), "company": COMPANY_NAME,"items": []}
 
         retorno = api.erp_request("GET", "Stock Entry", params={"filters": f'[[ "idpedido_ongsys", "=", "{idpedido}" ]]'})
         if retorno.json().get("data"):
@@ -105,7 +121,7 @@ for pedido in lista_pedidos_finalizados:
             if df_dict.get(centrocusto) is None:
             #    print(f"Pedido {pedido.get('idPedido')} - Centro de custo {centrocusto} não mapeado. Pulando item...")
                 continue
-            if item.get("quantidade", 0) == 0:
+            if float(item.get("quantidade", 0)) < 0.01:
            #     print(f"Pedido {pedido.get('idPedido')} - Item {item.get('idProduto')} ignorado (quantidade 0).")
                 continue
 
